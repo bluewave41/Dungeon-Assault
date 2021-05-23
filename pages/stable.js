@@ -1,30 +1,24 @@
-const { useState } = require('react');
-import applySession from 'next-session';
-const Raider = require('models/Raider');
-const RaiderPanel = require('components/stable/RaiderPanel');
+import { applySession } from 'next-session';
+import Raider from 'models/Raider';
+import StablePanel from 'components/stable/StablePanel';
 
 const Stable = (props) => {
     return (
-        <div>
-            <h1>Stable</h1>
-            <RaiderPanel raiders={props.raiders} />
-        </div>
+        <StablePanel raiders={props.raiders} />
     )
 }
 
 export async function getServerSideProps(context) {
     const { req, res } = context;
-    console.log('here')
     await applySession(req, res);
 
     const raiders = await Raider.query();
-    console.log('here', raiders);
 
     return {
         props: {
-            raiders: raiders
+            raiders: JSON.parse(JSON.stringify(raiders))
         }
     }
 }
 
-module.exports = Stable;
+export default Stable;

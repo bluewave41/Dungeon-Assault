@@ -3,6 +3,7 @@ exports.up = function(knex) {
 	return knex.schema.createTable('raiders', function(table) {
 		table.tinyint('id').primary().notNullable();
 		table.string('name', 20).notNullable();
+		table.string('description', 255);
 		table.integer('renown').notNullable();
 		table.integer('treasure').notNullable();
 		table.tinyint('attack').notNullable();

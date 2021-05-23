@@ -1,0 +1,4 @@
+#raiders {
+    display: grid;
+    grid-template-columns: 147px 147px 147px 147px;
+}

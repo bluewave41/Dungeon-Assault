@@ -1,0 +1,32 @@
+.container {
+    height: 70px;
+}
+
+.raider {
+    display: flex;
+}
+
+.leftCol {
+    flex: 10%;
+    vertical-align: bottom;
+}
+
+.rightCol {
+    flex: 90%;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 50px 50px;
+    margin-top: 12.7px;
+}
+
+.raiderRow {
+    border: 1px solid black;
+    width: 170px;
+    margin: 0;
+}
+
+.raiderRow > h5 {
+    margin: 0;
+}

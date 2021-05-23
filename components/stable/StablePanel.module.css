@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+}
+
+.leftCol {
+    flex: 20%;
+}
+
+.rightCol {
+    flex: 80%;
+}

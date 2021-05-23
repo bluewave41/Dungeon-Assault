@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+}
+
+.leftCol {
+    flex: 20%;
+}
+
+.rightCol {
+    flex: 80%;
+}

@@ -1,0 +1,8 @@
+.bar {
+    width: 100px;
+    height: 8px;
+    border: 1px solid black;
+    display: inline-block;
+    margin-left: 10px;
+    background-color: gray;
+}
