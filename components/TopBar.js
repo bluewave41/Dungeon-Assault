@@ -4,13 +4,13 @@ const TopBar = (props) => {
     return (
         <div className={styles.container}>
             <div className={styles.row}>
-                Test
+                <button>Confirm</button>
             </div>
             <div className={styles.row}>
                 Test2
             </div>
             <div className={styles.row}>
-                Test3
+                <button>Cancel</button>
             </div>
         </div>
     )

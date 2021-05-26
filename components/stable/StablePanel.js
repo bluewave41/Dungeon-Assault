@@ -1,18 +1,42 @@
 import { useState } from 'react';
 import styles from './StablePanel.module.css';
-import PurchaseRaiderPanel from './PurchaseRaiderPanel';
+import PurchasePanel from '../PurchasePanel';
 import PlayerOwnedRaiderPanel from './PlayerOwnedRaiderPanel';
-import InfoPanel from './InfoPanel';
-import RaiderPreviewPanel from './RaiderPreviewPanel';
-import TopBar from './TopBar';
-
-/*2 column layout with raiders on left and stable on right*/
+import PreviewPanel from '../PreviewPanel';
+import TopBar from '../TopBar';
+import PurchasableRaider from './PurchasableRaider';
 
 const Stable = (props) => {
+    const [raiderList, setRaiderList] = useState([]);
     const [selectedRaider, setSelectedRaider] = useState({});
+    const [goldToShow, setGoldToShow] = useState(props.user.gold);
+    const [selectedId, setSelectedId] = useState(null);
 
     const onSelectRaider = (raider) => {
+        setSelectedId(null);
         setSelectedRaider(raider);
+    }
+
+    const onHighlightRaider = (id) => {
+        setSelectedId(id);
+        setSelectedRaider(raiderList[id]);
+    }
+
+    const onDismissRaider = () => {
+        let copy = [...raiderList];
+        copy[selectedId] = null;
+        setRaiderList(copy);
+        //TODO: differentiate between whether raider was bought this session or was already confirmed
+    }
+
+    const onSelectSquare = (id) => {
+        if(raiderList[id]) {
+            return;
+        }
+        let copy = [...raiderList];
+        copy[id] = selectedRaider;
+        setRaiderList(copy);
+        setGoldToShow(goldToShow - selectedRaider.treasure);
     }
 
     return (
@@ -20,15 +44,19 @@ const Stable = (props) => {
             <TopBar />
             <div className={styles.container}>
                 <div className={styles.leftCol}>
-                    <PurchaseRaiderPanel raiders={props.raiders} onSelectRaider={onSelectRaider} />
+                    <PurchasePanel type={PurchasableRaider} items={props.raiders} onSelectItem={onSelectRaider} />
                 </div>
                 <div className={styles.rightCol}>
-                    <PlayerOwnedRaiderPanel />
-                    <RaiderPreviewPanel selectedRaider={selectedRaider}/>
+                    <PlayerOwnedRaiderPanel raiders={raiderList} onSelectSquare={onSelectSquare} onHighlightRaider={onHighlightRaider} />
+                    <PreviewPanel type="raider"
+                                  item={selectedRaider}
+                                  goldToShow={goldToShow}
+                                  showDismiss={selectedId != null}
+                                  onDismissRaider={onDismissRaider}
+                    />
                 </div>
             </div>
         </div>
-
     )
 }
 

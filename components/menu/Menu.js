@@ -1,9 +1,11 @@
-import '@fontsource/roboto';
 import Link from 'next/link';
+import styles from './Menu.module.css';
 
-export default function Home() {    
+console.log(styles);
+
+const Menu = () => {    
     return (
-        <div>
+        <div id={styles.menu}>
             <Link href='/login'>Login</Link>
             <Link href='/register'>Register</Link>
             <Link href='/stable'>Stable</Link>
@@ -11,3 +13,5 @@ export default function Home() {
         </div>
     )
 }
+
+export default Menu;

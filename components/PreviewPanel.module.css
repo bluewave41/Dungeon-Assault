@@ -8,6 +8,10 @@
     flex: 20%;
 }
 
+.middleCol {
+    flex: 60%;
+}
+
 .rightCol {
-    flex: 80%;
+    flex: 20%;
 }

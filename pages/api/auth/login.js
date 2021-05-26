@@ -1,11 +1,10 @@
 const User = require('models/User');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-import applySession from 'next-session';
+const { applySession } = require('next-session');
 
 export default async function handler(req, res) {
     await applySession(req, res);
-
     const { username, password } = req.body;
 
     if(!username) {
@@ -17,19 +16,24 @@ export default async function handler(req, res) {
         return res.end();
     }
 
-    const user = await User.query().select('id', 'username', 'password')
+    const user = await User.query().select('userId', 'username', 'password')
         .findOne('username', username);
+
+    if(!user) {
+        res.status(401).json({ error: "That username doesn't exist." });
+        return es.end();
+    }
 
     const shaPassword = crypto.createHash('sha256').update(password).digest('hex');
 
     const result = await bcrypt.compare(shaPassword, user.password);
     if(result) {
-        req.session.user = { id: user.id, username: user.username };
+        req.session.user = { userId: user.userId, username: user.username };
         res.status(200);
-        res.end();
+        return res.end();
     }
     else {
         res.status(401);
-        res.end();
+        return res.end();
     }
 }
