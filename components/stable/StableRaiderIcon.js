@@ -6,7 +6,7 @@ const StableRaiderIcon = (props) => {
     const onClick = (e) => {
         //if there's already a raider there, select it
         if(props.raider) {
-            props.onHighlightRaider(id);
+            props.onSelectPurchasedRaider(id);
         }
         //if no raider selected, add it
         else {
@@ -14,21 +14,11 @@ const StableRaiderIcon = (props) => {
         }
     }
 
-    let attributes = {
-        large: props.large,
-        onClick: onClick
-    }
-
     if(!props.raider || !props.raider.name) {
-        return <img {...attributes} src="/raiders/empty.png" />
+        return <img onClick={onClick} src="/raiders/empty.png" />
     }
 
-    if(props.large) {
-        return <img {...attributes} src={`/raiders/${props.raider.name.replace(/\s+/, '').toLowerCase()}.png`} />
-    }
-    else {
-        return <img {...attributes} className={styles.sprite} src={`/raiders/${props.raoder.name.replace(/\s+/, '').toLowerCase()}.png`} />
-    }
+    return <img onClick={onClick} src={`/raiders/${props.raider.name.replace(/\s+/, '').toLowerCase()}.png`} />
 }
 
 export default StableRaiderIcon;

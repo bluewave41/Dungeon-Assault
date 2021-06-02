@@ -1,10 +1,14 @@
 import styles from './TopBar.module.css';
 
 const TopBar = (props) => {
+    const onConfirmClick = () => {
+        props.onConfirmClick();
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.row}>
-                <button>Confirm</button>
+                <button onClick={onConfirmClick}>Confirm</button>
             </div>
             <div className={styles.row}>
                 Test2

@@ -3,9 +3,6 @@ import StatPanel from './StatPanel';
 import Sprite from './Sprite';
 
 const PreviewPanel = (props) => {
-    const onClick = () => {
-        props.onDismissRaider();
-    }
 
     return (
         <div className={styles.container}>
@@ -14,9 +11,6 @@ const PreviewPanel = (props) => {
             </div>
             <div className={styles.middleCol}>
                 <StatPanel type={props.type} item={props.item} />
-                {props.showDismiss && 
-                    <button onClick={onClick}>Dismiss</button>
-                }
             </div>
             <div className={styles.rightCol}>
                 <div>Gold: {props.goldToShow}</div>

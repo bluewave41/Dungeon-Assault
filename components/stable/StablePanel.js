@@ -5,31 +5,32 @@ import PlayerOwnedRaiderPanel from './PlayerOwnedRaiderPanel';
 import PreviewPanel from '../PreviewPanel';
 import TopBar from '../TopBar';
 import PurchasableRaider from './PurchasableRaider';
+import axios from 'axios';
 
 const Stable = (props) => {
-    const [raiderList, setRaiderList] = useState([]);
+    const [raiderList, setRaiderList] = useState(props.ownedRaiders);
+    const [oldRaiderList] = useState([...props.ownedRaiders]);
     const [selectedRaider, setSelectedRaider] = useState({});
     const [goldToShow, setGoldToShow] = useState(props.user.gold);
-    const [selectedId, setSelectedId] = useState(null);
+
+    const onConfirmClick = async (e) => {
+        console.log(raiderList);
+        const response = await axios.post('/api/stable/update', { newStable: raiderList });
+        if(response.ok) {
+
+        }
+    }
 
     const onSelectRaider = (raider) => {
-        setSelectedId(null);
         setSelectedRaider(raider);
     }
 
-    const onHighlightRaider = (id) => {
+    const onSelectPurchasedRaider = (id) => {
         setSelectedId(id);
         setSelectedRaider(raiderList[id]);
     }
 
-    const onDismissRaider = () => {
-        let copy = [...raiderList];
-        copy[selectedId] = null;
-        setRaiderList(copy);
-        //TODO: differentiate between whether raider was bought this session or was already confirmed
-    }
-
-    const onSelectSquare = (id) => {
+    const onPurchaseRaider = (id) => {
         if(raiderList[id]) {
             return;
         }
@@ -41,18 +42,16 @@ const Stable = (props) => {
 
     return (
         <div>
-            <TopBar />
+            <TopBar onConfirmClick={onConfirmClick} />
             <div className={styles.container}>
                 <div className={styles.leftCol}>
                     <PurchasePanel type={PurchasableRaider} items={props.raiders} onSelectItem={onSelectRaider} />
                 </div>
                 <div className={styles.rightCol}>
-                    <PlayerOwnedRaiderPanel raiders={raiderList} onSelectSquare={onSelectSquare} onHighlightRaider={onHighlightRaider} />
+                    <PlayerOwnedRaiderPanel raiders={raiderList} onPurchaseRaider={onPurchaseRaider} onSelectPurchasedRaider={onSelectPurchasedRaider} />
                     <PreviewPanel type="raider"
                                   item={selectedRaider}
                                   goldToShow={goldToShow}
-                                  showDismiss={selectedId != null}
-                                  onDismissRaider={onDismissRaider}
                     />
                 </div>
             </div>

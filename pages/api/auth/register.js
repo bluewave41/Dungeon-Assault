@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const User = require('models/User');
+const Dungeon = require('models/Dungeon');
+const DungeonGenerator = require('lib/DungeonGenerator');
 
 export default async function handler(req, res) {
 	const { username, password } = req.body;
@@ -29,9 +31,19 @@ export default async function handler(req, res) {
     const hashedPassword = await bcrypt.hash(crypto.createHash('sha256').update(password).digest('hex'), 10);
     console.log(hashedPassword);
 
-    await User.query().insert({
+    const row = await User.query().insert({
         username: username,
         password: hashedPassword
+    });
+
+    const dungeon = await DungeonGenerator.generate();
+    console.log(dungeon);
+
+    await Dungeon.query().insert({
+        userId: row.id,
+        seed1: dungeon[0],
+        seed2: dungeon[1],
+        seed3: dungeon[2]
     });
 
     res.status(200);

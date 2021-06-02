@@ -4,6 +4,10 @@ exports.up = function(knex) {
 		table.integer('userId').unsigned().references('userId').inTable('users').notNullable();
 		table.tinyint('raiderId').references('raiderId').inTable('raiders').notNullable();
 		table.tinyint('slot').notNullable();
+		table.tinyint('attack').notNullable();
+		table.tinyint('defence').notNullable();
+		table.tinyint('dodge').notNullable();
+		table.tinyint('sneak').notNullable();
 	})
 };
 
