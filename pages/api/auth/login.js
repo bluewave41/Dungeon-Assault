@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 
     if(!user) {
         res.status(401).json({ error: "That username doesn't exist." });
-        return es.end();
+        return res.end();
     }
 
     const shaPassword = crypto.createHash('sha256').update(password).digest('hex');

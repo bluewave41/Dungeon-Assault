@@ -31,7 +31,11 @@ export default function MyApp(props) {
   );
 }
 
+export async function getInitialProps({ req, res }) {
+    console.log('get props');
+}
+
 MyApp.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.object.isRequired,
+    Component: PropTypes.elementType.isRequired,
+    pageProps: PropTypes.object.isRequired,
 };
