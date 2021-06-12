@@ -6,11 +6,10 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import LoginPanel from 'components/panels/LoginPanel';
-import RegisterPanel from 'components/panels/RegisterPanel';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
+import Link from 'next/link';
 
 const useStyles = makeStyles({
     root: {
@@ -23,42 +22,6 @@ const useStyles = makeStyles({
     }
 });
 
-const TabPanel = (props) => {
-    const classes = useStyles();
-    const { children, value, index, ...other } = props;
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-        >
-            <Grid
-                container
-                className={classes.root}
-                spacing={0}
-                alignItems="center"
-                justify="center"
-            >
-                {value === index && (
-                    <Box p={3}>
-                        <Typography>{children}</Typography>
-                    </Box>
-                )}
-            </Grid>
-        </div>
-    )
-}
-const LinkTab = (props) => {
-    return (
-        <Tab 
-            component="a"
-            onClick={(event) => {
-                event.preventDefault()
-            }}
-            {...props}
-        />
-    )
-}
-
 const NavBar = (props) => {
     const [value, setValue] = useState(0);
     const classes = useStyles();
@@ -66,6 +29,16 @@ const NavBar = (props) => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     }
+
+    const tabs = [
+        { label: 'Login', href: '/login', showIfLoggedIn: false },
+        { label: 'Register', href: '/register', showIfLoggedIn: false },
+
+        { label: 'Dungeon', href: '/dungeon', showIfLoggedIn: true },
+        { label: 'Stable', href: '/stable', showIfLoggedIn: true },
+        { label: 'Renown Table', href: '/renown', showIfLoggedIn: true },
+        { label: 'Logout', href: '/logout', showIfLoggedIn: true },
+    ]
     return (
         <div>
             <AppBar position="sticky">
@@ -78,24 +51,29 @@ const NavBar = (props) => {
                         value={value}
                         onChange={handleChange}
                     >
-                        <LinkTab label="Login" href="/login" />
-                        <LinkTab label="Register" href="/register" />
+                        {tabs.map(el => {
+                            if(props.username && !el.showIfLoggedIn) {
+                                return;
+                            }
+                            return (
+                                <Link href={el.href}>
+                                    <Tab
+                                        label={el.label}
+                                    />
+                                </Link>
+                            )
+                        })}
                     </Tabs>
                     <IconButton
                         aria-label="account of current user"
                         aria-controls="menu-appbar"
                         color="inherit"
                     >
-                <AccountCircle />
-              </IconButton>
+                        <AccountCircle />
+                    </IconButton>
+                {props.username}
                 </ToolBar>
             </AppBar>
-            <TabPanel value={value} index={0}>
-                <LoginPanel />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <RegisterPanel />
-            </TabPanel>
         </div>
     )
 }

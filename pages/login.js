@@ -1,60 +1,143 @@
-const { default: axios } = require('axios');
-const { useState } = require('react');
+import { useState } from 'react';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import axios from 'axios';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/styles';
+import RedirectLoggedIn from 'lib/RedirectLoggedIn';
 
-const Login = (props) => {
-    const [user, setUser] = useState({
-        username: '',
-        password: ''
+const useStyles = makeStyles({
+    circle: {
+        width: "16px",
+        height: "16px",
+        borderRadius: "50%",
+        backgroundColor: props => props.loginStatus,
+        display: "inline-block",
+        marginLeft: "auto",
+        alignSelf: "center",
+    },
+    card: {
+        backgroundColor: '#333',
+    },
+    buttonContainer: {
+        display: "flex",
+        alignItems: "center"
+    }
+});
+
+const LoginPanel = (props) => {
+    const [usernameBox, setUsernameBox] = useState({
+        value: '',
+        error: false,
+        helperText: ''
+    });
+    const [passwordBox, setPasswordBox] = useState({
+        value: '',
+        error: false,
+        helperText: ''
     });
 
-    const [errors, setErrors] = useState([[]]);
+    const [loginStatus, setLoginStatus] = useState('');
+
+    const classes = useStyles({loginStatus: loginStatus});
 
     const onChange = (e) => {
-        setUser({
-            ...user,
-            [e.target.name]: e.target.value
+        let copy;
+        if(e.target.name == 'username') {
+            copy = { ...usernameBox };
+            copy.value = e.target.value;
+            setUsernameBox(copy);
+        }
+        else {
+            copy = { ...passwordBox };
+            copy.value = e.target.value;
+            setPasswordBox(copy);
+        }
+    }
+
+    const onSubmit = async(e) => {
+        //reset boxes
+        setUsernameBox({
+            value: usernameBox.value,
+            error: false,
+            helperText: ''
         });
-    }
-
-    const verify = (e) => {
-        let errors = [];
-        if(!user.username) {
-            errors.push("You didn't enter your username.");
+        setPasswordBox({
+            value: passwordBox.value,
+            error: false,
+            helperText: ''
+        });
+        if(!usernameBox.value) {
+            let copy = { ...usernameBox };
+            copy.error = true;
+            copy.helperText = "Field cannot be empty.";
+            setUsernameBox(copy);
         }
-        if(!user.password) {
-            errors.push("You didn't enter your password.");
+        if(!passwordBox.value) {
+            let copy = { ...passwordBox };
+            copy.error = true;
+            copy.helperText = "Field cannot be empty.";
+            setPasswordBox(copy);
         }
-        if(user.username.length > 20) {
-            errors.push("Your username is too long. Usernames must be between 1 and 20 characters.");
-        }
-        if(errors.length) {
-            setErrors(errors);
-            return false;
-        }
-        return true;
-    }
-
-    const onSubmit = async (e) => {
-        if(verify()) {
-            const response = await axios.post('/api/auth/login', { username: user.username, password: user.password });
-            if(response.ok) {
-
+        if(usernameBox.value && passwordBox.value) {
+            try {
+                const response = await axios.post('/api/auth/login', { username: usernameBox.value, password: passwordBox.value });
+                props.setUsername(usernameBox.value);
+                setLoginStatus('green');
             }
-            else {
-
+            catch(error) {
+                setLoginStatus('red');
             }
         }
     }
 
     return (
-        <div>
-            <h1>Login</h1>
-            <div>{errors.map(el => <div>{el}</div>)}</div>
-            <div><input type="text" placeholder="Username" name="username" onChange={onChange} /></div>
-            <div><input type="password" placeholder="Password" name="password" onChange={onChange} /></div>
-            <button onClick={onSubmit}>Login</button>
-        </div>
+        <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justify="center"
+        >
+            <Card>
+                <CardContent>
+                    <Typography variant="h4" align="center">Login</Typography>
+                    <div>
+                        <TextField
+                            id="username"
+                            label="Username"
+                            variant="filled" 
+                            name="username" 
+                            onChange={onChange}
+                            error={usernameBox.error ? true : false}
+                            helperText={usernameBox.error ? usernameBox.helperText : ''}
+                        />
+                    </div>
+                    <div>
+                        <TextField 
+                            id="password" 
+                            label="Password" 
+                            variant="filled" 
+                            name="password" 
+                            onChange={onChange} 
+                            type="password"
+                            error={passwordBox.error ? true : false}
+                            helperText={passwordBox.error ? passwordBox.helperText : ''}
+                        />
+                    </div>
+                    <div className={classes.buttonContainer}>
+                        <Button variant="contained" onClick={onSubmit}>Login</Button>
+                        <span className={classes.circle}></span>
+                    </div>
+                </CardContent>
+            </Card>
+        </Grid>
     )
 }
 
-module.exports = Login;
+export const getServerSideProps = RedirectLoggedIn;
+
+export default LoginPanel;

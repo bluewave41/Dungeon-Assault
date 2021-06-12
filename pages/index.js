@@ -1,13 +1,7 @@
 import '@fontsource/roboto';
-import Link from 'next/link';
 
 export default function Home() {    
     return (
-        <div>
-            <Link href='/login'>Login</Link>
-            <Link href='/register'>Register</Link>
-            <Link href='/stable'>Stable</Link>
-            <Link href='/dungeon'>Dungeon</Link>
-        </div>
+        <></>
     )
 }
