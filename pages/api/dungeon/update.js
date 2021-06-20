@@ -1,6 +1,6 @@
 import { applySession } from 'next-session';
 import UserModel from 'models/User';
-import DungeonModel from 'models/Dungeon';
+import DungeonTiles from 'models/DungeonTiles';
 import TrapModel from 'models/Trap';
 
 export default async function(req, res) {
@@ -14,30 +14,25 @@ export default async function(req, res) {
         return res.end();
     }
 
-    const dungeon = (await DungeonModel.query().select('*')
-        .findOne('userId', req.session.user.userId)).getPlacedTraps(); //convert to 2d array
+    const tiles = await DungeonTiles.query()
+        .where('userId', req.session.user.userId);
 
     const traps = await TrapModel.query().select();
 
-    const newDungeon = req.body.newDungeon;
+    const changes = req.body.changes;
 
-    let updateObject = {};
-
-    for(var x=0;x<dungeon.length;x++) {
-        for(var y=0;y<dungeon.length;y++) {
-            if(dungeon[x][y] != newDungeon[x][y]) {
-                updateObject['tile' + (x*7 + y + 1)] = newDungeon[x][y];
-                let trap = traps.find(el => el.id == newDungeon[x][y]);
-                if(dungeon[x][y] == 0) { //empty
-                    user.gold -= trap.treasure;
-                }
-                else { //replacing
-                    let oldTrap = traps.find(el => el.id == dungeon[x][y]);
-                    //refund half cost
-                    user.gold += Math.floor(oldTrap.treasure/2);
-                    user.gold -= trap.treasure;
-                }
-            }
+    for(var i=0;i<changes.length;i++) {
+        //ensure user has enough renown
+        //make sure trap exists
+        let change = changes[i];
+        let newTrap = traps.find(el => el.trapId == change.trapId);
+        if(tiles[change.tile].trapId) { //overwriting trap
+            let oldTrap = traps.find(el => el.trapId == tiles[change.tile].trapId); //get the old trap
+            user.gold += Math.floor(oldTrap.treasure / 2);
+            user.gold -= newTrap.treasure;
+        }
+        else { //adding trap
+            user.gold -= newTrap.treasure;
         }
     }
 
@@ -52,7 +47,11 @@ export default async function(req, res) {
     })
     .where('userId', req.session.user.userId);
 
-    //update dungeon
-    await DungeonModel.query().update(updateObject)
-        .where('userId', req.session.user.userId);
+    for(var i=0;i<changes.length;i++) {
+        await DungeonTiles.query().update({
+            trapId: changes[i].trapId
+        })
+        .where('userId', req.session.user.userId)
+        .where('tile', changes[i].tile);
+    }
 }

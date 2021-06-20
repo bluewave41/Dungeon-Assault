@@ -14,7 +14,6 @@ const Stable = (props) => {
     const [goldToShow, setGoldToShow] = useState(props.user.gold);
 
     const onConfirmClick = async (e) => {
-        console.log(raiderList);
         const response = await axios.post('/api/stable/update', { newStable: raiderList });
         if(response.ok) {
 

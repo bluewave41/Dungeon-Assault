@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
 	return knex.schema.createTable('traps', function(table) {
-		table.tinyint('id').primary().notNullable();
+		table.tinyint('trapId').primary().notNullable();
 		table.string('name', 20).notNullable();
 		table.string('description', 255);
 		table.integer('renown').notNullable();

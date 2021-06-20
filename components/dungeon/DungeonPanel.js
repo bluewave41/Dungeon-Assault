@@ -8,17 +8,24 @@ import DungeonLayout from './DungeonLayout';
 import axios from 'axios';
 
 const Dungeon = (props) => {
+    console.log(props);
     const [selectedTrap, setSelectedTrap] = useState({});
-    const [oldPlacedTraps] = useState(props.placedTraps.map(el => el.slice()));
+    const [tiles, setTiles] = useState(Array.from(props.tiles));
+    const [oldTiles] = useState(JSON.parse(JSON.stringify(props.tiles)));
     const [goldToShow, setGoldToShow] = useState(props.user.gold);
-    const [placedTraps, setPlacedTraps] = useState(props.placedTraps);
 
     const onSelectTrap = (trap) => {
         setSelectedTrap(trap);
     }
 
     const onConfirmClick = async (e) => {
-        const response = await axios.post('/api/dungeon/update', { newDungeon: placedTraps });
+        let changes = [];
+        for(var i=0;i<tiles.length;i++) {
+            if(tiles[i].trapId != oldTiles[i].trapId) {
+                changes.push(tiles[i]);
+            }
+        }
+        const response = await axios.post('/api/dungeon/update', { changes: changes });
         if(response.ok) {
             console.log('good');
         }
@@ -28,28 +35,19 @@ const Dungeon = (props) => {
     }
 
     const onTrapChange = (squareId) => {
-        if(squareId == 1 || squareId == 7 || squareId == 25 || squareId == 43 || squareId == 49) {
-            return;
-        }
-        squareId = squareId-1;
-        let copy = placedTraps.map(el => el.slice());
-        let col = Math.floor(squareId/7);
-        let index = squareId%7;
-        copy[col][index] = selectedTrap.id;
+        let oldTile = oldTiles.find(el => el.tile == squareId);
+        let copy = [...tiles];
+        copy.find(el => el.tile == squareId).trapId = selectedTrap.trapId;
 
-        let difference = 0;
-
-        if(oldPlacedTraps[col][index] != 0) { //overwriting a trap
-            //give back half the cost
-            let trap = props.traps.find(el => el.id == selectedTrap.id);
-            difference += Math.floor(trap.treasure/2);
+        if(oldTile.trapId) { //overwriting a trap
+            let difference = Math.floor(selectedTrap.treasure/2);
             difference -= selectedTrap.treasure;
             setGoldToShow(goldToShow + difference);
         }
         else {
             setGoldToShow(goldToShow - selectedTrap.treasure);
         }
-        setPlacedTraps(copy);
+        setTiles(copy);
     }
 
     return (
@@ -60,12 +58,11 @@ const Dungeon = (props) => {
                     <PurchasePanel type={PurchasableTrap} items={props.traps} onSelectItem={onSelectTrap} />
                 </div>
                 <div className={styles.rightCol}>
-                    <DungeonLayout seeds={props.seeds} placedTraps={placedTraps} onTrapChange={onTrapChange} />
+                    <DungeonLayout tiles={tiles} onTrapChange={onTrapChange} />
                     <PreviewPanel type="trap" item={selectedTrap} goldToShow={goldToShow} />
                 </div>
             </div>
         </div>
-
     )
 }
 

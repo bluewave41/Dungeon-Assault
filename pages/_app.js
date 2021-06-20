@@ -38,7 +38,9 @@ export default function MyApp(props) {
 MyApp.getInitialProps = async(appContext) => {
     if(typeof window !== 'undefined') { //this runs on the client side
         return {
-            username: ''
+            pageProps: {
+                username: ''
+            }
         }
     }
 

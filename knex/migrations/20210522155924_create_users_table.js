@@ -6,6 +6,9 @@ exports.up = function(knex) {
 		table.specificType('password', 'char(60)').notNullable
 		table.integer('gold').defaultsTo(1000).notNullable();
 		table.integer('renown').defaultsTo(1000).notNullable();
+		table.integer('seed1').notNullable();
+		table.integer('seed2').notNullable();
+		table.integer('seed3').notNullable();
 	})
 };
 
