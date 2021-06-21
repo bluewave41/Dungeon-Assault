@@ -8,7 +8,6 @@ import DungeonLayout from './DungeonLayout';
 import axios from 'axios';
 
 const Dungeon = (props) => {
-    console.log(props);
     const [selectedTrap, setSelectedTrap] = useState({});
     const [tiles, setTiles] = useState(Array.from(props.tiles));
     const [oldTiles] = useState(JSON.parse(JSON.stringify(props.tiles)));

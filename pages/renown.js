@@ -83,7 +83,7 @@ const Renown = (props) => {
                 <Button onClick={onSelectRaiders} variant="contained" color="primary" disabled={selectedIndex == -1}>Raid</Button>
                 {showBackdrop &&
                     <Backdrop className={classes.backdrop} open={showBackdrop}>
-                        <PrepareRaidPanel raiders={raiders} onCancel={onCancel} />
+                        <PrepareRaidPanel raiders={raiders} onCancel={onCancel} target={renownTable[selectedIndex]} />
                     </Backdrop>}
             </Grid>
         </Container>
@@ -94,7 +94,6 @@ export async function getServerSideProps(context) {
     const { req, res } = context;
 
     const raiders = await Stable.getRaiders(req.session.user.userId);
-    console.log(raiders);
 
     return {
         props: {
