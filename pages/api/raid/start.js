@@ -24,7 +24,7 @@ export default async function(req, res) {
     //slot numbers should only be from 1 to 8
     for(var i=0;i<raiders.length;i++) {
         if(raiders[i] < 1 || raiders[i] > 8) {
-            res.status(400).json({ error: "Invalid slot number received. "});
+            res.status(400).json({ error: "Invalid slot number received." });
             return res.end();
         }
     }
@@ -37,6 +37,8 @@ export default async function(req, res) {
     await RaidStatus.query().insert({
         userId: req.session.user.userId,
         targetId: target.userId,
+        status: 1,
+        currentTile: 0,
         raider1: raiders[0],
         raider2: raiders[1],
         raider3: raiders[2],

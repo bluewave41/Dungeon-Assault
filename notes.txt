@@ -1,0 +1,5 @@
+Raid status
+
+1 - select corner
+2 - select starting raider
+3 - moving through dungeon

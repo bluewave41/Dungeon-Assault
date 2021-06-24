@@ -6,31 +6,39 @@ const Square = (props) => {
         props.onTrapChange(props.index);
     }
 
-    if(props.index == 0 || props.index == 6 || props.index == 42 || props.index == 48) {
+    let tile;
+
+    if(props.index == 0 || props.index == 6 || props.index == 42 || props.index == 48) { //corner tile
+        tile = 'tiles/corner.png';
+    }
+    else if(props.index == 24) { //center tile
+        tile = 'tiles/hoard.png';
+    }
+    else if(props.locked) {
+        tile = 'tiles/locked.png';
+    }
+    else if(!props.tile) {
+        tile = 'tiles/empty.png';
+    }
+    else {
+        tile = TileMap[props.tile.trapId];
+    }
+
+    if(props.showPath) {
         return (
-            <div className={styles.square}>
-                <img className={styles.path} src='tiles/corner.png' />
+            <div className={styles.square} onClick={onClick}>
+                <img className={styles.path} src={tile} />
                 <img className={styles.path} src={`/squares/${props.tile.movement}.png`} />
             </div>
         )
     }
-    if(props.index == 24) {
+    else {
         return (
-            <div className={styles.square}>
-                <img className={styles.path} src='tiles/hoard.png' />
-                <img className={styles.path} src={`/squares/${props.tile.movement}.png`} />
+            <div className={styles.square} onClick={onClick}>
+                <img className={styles.path} src={tile} />
             </div>
         )
     }
-
-    const tile = TileMap[props.tile.trapId];
-
-    return (
-        <div className={styles.square} onClick={onClick}>
-            <img className={styles.path} src={tile} />
-            <img className={styles.path} src={`/squares/${props.tile.movement}.png`} />
-        </div>
-    )
 }
 
 export default Square;

@@ -12,7 +12,7 @@ const PrepareRaidPanel = (props) => {
     const onStart = async (e) => {
         const response = await axios.post('/api/raid/start', { raiders: selectedRaiders, target: props.target.username });
         if(response.status == 200) {
-            router.push('/');
+            router.push('/raid');
         }
     }
 

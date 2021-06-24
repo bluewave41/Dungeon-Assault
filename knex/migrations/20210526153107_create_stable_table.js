@@ -1,8 +1,8 @@
 
 exports.up = function(knex) {
 	return knex.schema.createTable('stable', function(table) {
-		table.integer('userId').unsigned().references('userId').inTable('users').notNullable();
-		table.tinyint('raiderId').references('raiderId').inTable('raiders').notNullable();
+		table.integer('userId').unsigned().references('userId').inTable('users').onDelete('cascade').notNullable();
+		table.tinyint('raiderId').references('raiderId').inTable('raiders').onDelete('cascade').notNullable();
 		table.tinyint('slot').notNullable();
 		table.tinyint('attack').notNullable();
 		table.tinyint('defence').notNullable();
