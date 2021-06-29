@@ -12,7 +12,7 @@ const OwnedRaidersPanel = (props) => {
         squares.push(
             <Grid item xs={3}>
                 <Box display="flex" justifyContent="center">
-                    <Icon raider={props.raiders[i]} clickable={props.raiders[i] ? true : false} onSelectRaider={onSelectRaider}/>
+                    <Icon raider={props.raiders[i]} clickable={props.raiders[i] ? true : false} onClick={onSelectRaider}/>
                 </Box>
             </Grid>
         )

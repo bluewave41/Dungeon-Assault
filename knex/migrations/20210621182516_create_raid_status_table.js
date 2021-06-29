@@ -3,6 +3,7 @@ exports.up = function(knex) {
 	return knex.schema.createTable('raid_status', function(table) {
 		table.integer('userId').unsigned().primary().references('userId').inTable('users').onDelete('cascade').notNullable();
 		table.integer('targetId').unsigned().references('userId').inTable('users').onDelete('cascade').notNullable();
+		table.tinyint('selectedSlot');
 		table.tinyint('status').notNullable();
 		table.tinyint('currentTile').notNullable();
 		table.tinyint('raider1').notNullable();

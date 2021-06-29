@@ -32,7 +32,10 @@ export default async function(req, res) {
     const target = await User.query().select('userId')
         .findOne('username', req.body.target);
 
-    await RaidStatus.query().delete();
+    await RaidStatus.query().delete()
+        .where('userId', req.session.user.userId);
+    await RaidDungeon.query().delete()
+        .where('userId', req.session.user.userId);
 
     await RaidStatus.query().insert({
         userId: req.session.user.userId,

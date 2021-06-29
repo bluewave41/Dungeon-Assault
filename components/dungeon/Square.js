@@ -1,9 +1,30 @@
-import styles from './Square.module.css';
 import TileMap from 'lib/TileMap';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+    occupied: {
+        boxShadow: '0 0 30px yellow'
+    },
+    square: {
+        width: '50px',
+        height: '50px',
+        outline: '1px solid black',
+        display: 'inline-block',
+        position: 'relative',
+        margin: "2px"
+    },
+    path: {
+        position: 'absolute'
+    },
+    movable: {
+        outline: "2px solid yellow"
+    }
+});
 
 const Square = (props) => {
+    const styles = useStyles();
     const onClick = (e) => {
-        props.onTrapChange(props.index);
+        props.onClick(props.index);
     }
 
     let tile;
@@ -14,14 +35,14 @@ const Square = (props) => {
     else if(props.index == 24) { //center tile
         tile = 'tiles/hoard.png';
     }
-    else if(props.locked) {
+    else if(props.tile) {
+        tile = TileMap[props.tile.trapId];
+    }
+    else if(props.trapId == -1) {
         tile = 'tiles/locked.png';
     }
-    else if(!props.tile) {
-        tile = 'tiles/empty.png';
-    }
     else {
-        tile = TileMap[props.tile.trapId];
+        tile = 'tiles/empty.png';
     }
 
     if(props.showPath) {
@@ -34,7 +55,7 @@ const Square = (props) => {
     }
     else {
         return (
-            <div className={styles.square} onClick={onClick}>
+            <div className={`${styles.square} ${props.occupied ? styles.occupied: ''} ${props.movable ? styles.movable : ''}`} onClick={onClick}>
                 <img className={styles.path} src={tile} />
             </div>
         )

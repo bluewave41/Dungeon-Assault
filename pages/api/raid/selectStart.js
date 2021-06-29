@@ -1,7 +1,8 @@
 import { applySession } from 'next-session';
 import RaidStatus from 'models/RaidStatus';
+import RaidDungeon from 'models/RaidDungeon';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
     await applySession(req, res);
 
     //check if logged in
@@ -29,4 +30,13 @@ export default function handler(req, res) {
         status: 2
     })
     .where('userId', req.session.user.userId);
+
+    await RaidDungeon.query().update({
+        visited: true,
+    })
+    .where('userId', req.session.user.userId)
+    .where('tile', req.body.tile);
+
+    res.status(200);
+    res.end();
 }

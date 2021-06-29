@@ -5,6 +5,8 @@ exports.up = function(knex) {
 		table.tinyint('tile').notNullable();
 		table.tinyint('movement').notNullable();
 		table.tinyint('trapId').references('trapId').inTable('traps').onDelete('cascade');
+		table.boolean('active').defaultsTo('true');
+		table.boolean('visited').defaultsTo('false');
 	});
 };
 

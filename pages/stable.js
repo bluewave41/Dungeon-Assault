@@ -13,7 +13,6 @@ const Stable = (props) => {
 export async function getServerSideProps(context) {
     const { req, res } = context;
     await applySession(req, res);
-    console.log(req.session)
 
     const raiders = await Raider.query();
     const user = await User.query().select('gold')
