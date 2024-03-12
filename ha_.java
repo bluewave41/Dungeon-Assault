@@ -14,7 +14,6 @@ import java.net.URL;
 import java.net.Proxy.Type;
 import java.nio.charset.Charset;
 import java.util.List;
-import sun.net.www.protocol.http.AuthenticationInfo;
 
 final class ha_ extends um_ {
    static String[] _n = new String[]{null, "To store your progress, you<nbsp>must", "To store your score, you<nbsp>must", "To store your score and progress, you<nbsp>must", "To store your achievements, you<nbsp>must", "To store your achievements and progress, you<nbsp>must", "To store your achievements and score, you<nbsp>must", "To store your achievements, score and progress, you<nbsp>must"};

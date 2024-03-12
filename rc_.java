@@ -54,7 +54,7 @@ final class rc_ {
          }
 
          String var5 = uc_._K[var2];
-         int var6 = rb_.a218((byte)107, var3 >= 0, var5);
+         int var6 = rb_.a218((byte)107, var5);
          int var7 = -(var6 >> 1) + tm_._e;
          if (var3 >= 0) {
             var1 += lc_._j;

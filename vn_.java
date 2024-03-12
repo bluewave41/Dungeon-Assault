@@ -13,13 +13,13 @@ class vn_ {
    private long _o = 0L;
    private int _a = 0;
    private qb_[] _n = new qb_[8];
-   private int _j;
+   protected int _j;
    private long _m = 0L;
    private int _i = 0;
    private int _r = 0;
    private qb_[] _p = new qb_[8];
    private int _s;
-   private int _f;
+   protected int _f;
    private int _c = 0;
    private boolean _k = true;
 

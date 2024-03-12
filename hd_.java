@@ -428,8 +428,6 @@ final class hd_ {
          Class var0 = SoftReference.class;
          _h = var0.getConstructor(Object.class);
          _e = var0.getMethod("get", (Class[])null);
-      } catch (ClassNotFoundException var1) {
-         _h = null;
       } catch (NoSuchMethodException var2) {
          _h = null;
       }
