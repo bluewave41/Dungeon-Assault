@@ -1,11 +1,11 @@
 final class po_ {
    private int _e = jp_.a137(16);
    private int _f = jp_.a137(24);
-   private int[] _d;
-   private int _c = jp_.a137(6) + 1;
    private int _b = jp_.a137(24);
    private int _g = jp_.a137(24) + 1;
+   private int _c = jp_.a137(6) + 1;
    private int _a = jp_.a137(8);
+   private int[] _d;
 
    final void a623(float[] var1, int var2, boolean var3) {
       int var4;
