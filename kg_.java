@@ -34,8 +34,8 @@ public abstract class kg_ extends Applet implements Runnable, FocusListener, Win
       this.destroy();
    }
 
-   final boolean b154(int var1) {
-      String var3 = this.getDocumentBase().getHost().toLowerCase();
+   final boolean hostNameCheck(int var1) {
+      /*String var3 = this.getDocumentBase().getHost().toLowerCase();
       if (!var3.equals("jagex.com") && !var3.endsWith(".jagex.com")) {
          if (!var3.equals("funorb.com") && !var3.endsWith(".funorb.com")) {
             if (var3.endsWith("127.0.0.1")) {
@@ -57,7 +57,8 @@ public abstract class kg_ extends Applet implements Runnable, FocusListener, Win
          }
       } else {
          return true;
-      }
+      }*/
+	   return true;
    }
 
    public final void windowDeiconified(WindowEvent var1) {

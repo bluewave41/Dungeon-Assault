@@ -25,7 +25,7 @@ abstract class in_ extends kg_ {
 
    private final void a048(String var1, int var2, boolean var3, int var4, int var5) {
       try {
-         if (!this.b154(-126)) {
+         if (!this.hostNameCheck(-126)) {
             return;
          }
 
